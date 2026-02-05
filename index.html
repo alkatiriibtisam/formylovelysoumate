@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Special for Syifa Ushodry 💙</title>
+    <link href="https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@1,300;1,400&family=Poppins:wght@300;400;500&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
+    <style>
+        body {
+            margin: 0; padding: 0; min-height: 100vh;
+            background: #e0f2f7; font-family: 'Poppins', sans-serif;
+            color: #2c3e50; display: flex; justify-content: center; align-items: center;
+            overflow: hidden;
+        }
+
+        /* Layar Game */
+        #game-screen {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: #b3e5fc; z-index: 100; display: flex;
+            flex-direction: column; align-items: center; justify-content: center;
+            text-align: center;
+        }
+
+        .bubble {
+            position: absolute; background: rgba(3, 169, 244, 0.4);
+            border: 2px solid #03a9f4; border-radius: 50%;
+            cursor: pointer; transition: transform 0.2s;
+            display: flex; align-items: center; justify-content: center;
+            color: white; font-weight: bold; font-size: 12px;
+        }
+
+        .bubble:hover { transform: scale(1.1); }
+
+        /* Layar Puisi */
+        .puisi-container {
+            background: rgba(255, 255, 255, 0.9);
+            padding: 40px; border-radius: 25px;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+            max-width: 650px; width: 85%; text-align: center;
+            z-index: 2; display: none; /* Sembunyi dulu */
+            opacity: 0; transition: opacity 1s;
+        }
+
+        h1 { font-family: 'Merriweather', serif; color: #0d47a1; font-size: 2.2rem; }
+        
+        .puisi-teks {
+            font-family: 'Merriweather', serif; font-size: 1.1rem;
+            line-height: 1.8; text-align: left; height: 350px;
+            overflow-y: auto; padding-right: 10px; margin-top: 20px;
+        }
+
+        .puisi-teks::-webkit-scrollbar { width: 4px; }
+        .puisi-teks::-webkit-scrollbar-thumb { background: #81d4fa; }
+
+        .btn-end {
+            margin-top: 30px; padding: 12px 30px;
+            background: #03a9f4; color: white; border: none;
+            border-radius: 50px; cursor: pointer; font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="game-screen">
+        <h2 style="color: #01579b; margin-bottom: 10px;">Hai, Syifa Ushodry! 💙</h2>
+        <p style="color: #0277bd;">Pecahkan semua gelembung biru <br>untuk membuka pesan rahasiamu!</p>
+        <div id="bubble-container"></div>
+    </div>
+
+    <div id="puisi-container" class="puisi-container">
+        <h1>Untukmu, Syifa.</h1>
+        <div id="puisi-teks" class="puisi-teks"></div>
+        <button class="btn-end" onclick="hbd()">Klik Terakhir ✨</button>
+    </div>
+
+    <script>
+        const bubbleContainer = document.getElementById('bubble-container');
+        let bubblesCount = 12; // Jumlah gelembung
+
+        // Munculin gelembung secara acak
+        for (let i = 0; i < bubblesCount; i++) {
+            const bubble = document.createElement('div');
+            bubble.className = 'bubble';
+            const size = Math.random() * 60 + 60 + 'px';
+            bubble.style.width = size;
+            bubble.style.height = size;
+            bubble.style.left = Math.random() * 80 + 10 + 'vw';
+            bubble.style.top = Math.random() * 70 + 15 + 'vh';
+            bubble.innerText = 'POP!';
+            
+            bubble.onclick = function() {
+                this.style.display = 'none';
+                bubblesCount--;
+                if (bubblesCount === 0) {
+                    openPoem();
+                }
+            };
+            bubbleContainer.appendChild(bubble);
+        }
+
+        function openPoem() {
+            document.getElementById('game-screen').style.display = 'none';
+            const container = document.getElementById('puisi-container');
+            container.style.display = 'block';
+            setTimeout(() => { container.style.opacity = '1'; }, 100);
+            typeWriter();
+        }
+
+        const teksPuisi = `Di usiamu yang kini dua puluh tiga,<br>
+        Sebuah angka yang baru, dengan kisah yang tak terduga.<br>
+        Ku doakan semua langkahmu takkan sia-sia,<br>
+        Atas hadirmu Syifa, syukurku tiada berhingga.<br><br>
+
+        Teringat tawa kita yang pecah tanpa sebab,<br>
+        Kadang bisik rahasia, kadang pula curhat yang merembap.<br>
+        Kau adalah telinga, saat duniaku terasa gelap,<br>
+        Bahumu tempatku bersandar, saat jiwaku ingin menetap.<br><br>
+
+        Dulu, mungkin banyak kata yang tak terucap sempurna,<br>
+        Tentang kebaikanmu yang bagiku tiada tara.<br>
+        Bagaimana kau mengerti aku, tanpa perlu banyak meminta,<br>
+        Saat aku tak bisa ke sana, kau dengan senang hati datang ke sini tanpa cela.<br><br>
+
+        Aku tahu itu kadang tak adil, dan aku merasa sering menuntut,<br>
+        Tapi kau tak pernah mengeluh, hatimu tak pernah berkerut.<br>
+        Kau mau datang ke rumahku, meruntuhkan jarak yang terpangkas,<br>
+        Menemaniku mengobrol, membuat segala penatku lepas.<br><br>
+
+        Terima kasih Syifa Ushodry, karena sudah sesabar itu,<br>
+        Menerima segala batasku dengan hati yang begitu tentu.<br>
+        Di tengah hiruk pikuk hidup yang kadang menderu,<br>
+        Memilikimu sebagai sahabat adalah anugerah terindah bagiku.<br><br>
+
+        Teruslah bersinar, bintangku yang paling terang,<br>
+        Jangan pernah kau gentar, jangan pernah kau goyang.<br>
+        Aku bangga memilikimu, lebih dari yang bisa terbilang.<br>
+        Selamat ulang tahun, Sahabatku, semoga bahagiamu takkan pernah lekang.`;
+
+        let j = 0;
+        function typeWriter() {
+            const target = document.getElementById("puisi-teks");
+            if (j < teksPuisi.length) {
+                if (teksPuisi.slice(j, j + 4) === "<br>") {
+                    target.innerHTML += "<br>";
+                    j += 4;
+                } else {
+                    target.innerHTML += teksPuisi.charAt(j);
+                    j++;
+                }
+                setTimeout(typeWriter, 35);
+                target.scrollTop = target.scrollHeight;
+            }
+        }
+
+        function hbd() {
+            confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 }, colors: ['#03a9f4', '#ffffff'] });
+            alert("Happy Birthday Syifa Ushodry! I'm so proud of you! 💙");
+        }
+    </script>
+</body>
+  </html>
+  
