@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Barakallah fie umriiikk syifaaaaa🥳😘</title>
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600&family=Caveat:wght@700&family=Merriweather:ital@1&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
+    <style>
+        body { margin: 0; background: #e1f5fe; font-family: 'Quicksand', sans-serif; color: #01579b; overflow: hidden; touch-action: manipulation; }
+        .screen { position: fixed; width: 100%; height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; transition: 0.8s; padding: 20px; box-sizing: border-box; }
+        .hidden { display: none !important; }
+        
+        /* Item Game */
+        .item { position: absolute; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: transform 0.2s; z-index: 5; }
+        .bubble { background: radial-gradient(circle at 30% 30%, rgba(255,255,255,0.9), rgba(3, 169, 244, 0.4)); border-radius: 50%; box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
+        .gift { font-size: 40px; filter: drop-shadow(0 5px 10px rgba(0,0,0,0.1)); }
+
+        /* Card Puisi */
+        .card { background: rgba(255, 255, 255, 0.85); backdrop-filter: blur(10px); padding: 25px; border-radius: 30px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); width: 100%; max-width: 380px; position: relative; z-index: 10; border: 2px solid #fff; }
+        .puisi-box { height: 350px; overflow-y: auto; text-align: left; font-family: 'Merriweather', serif; font-style: italic; line-height: 1.8; padding: 15px; background: rgba(255,255,255,0.4); border-radius: 20px; font-size: 0.95rem; scroll-behavior: smooth; }
+        
+        /* Kelopak Bunga Biru */
+        .petal { position: absolute; background: #b3e5fc; border-radius: 150% 0 150% 0; opacity: 0.7; pointer-events: none; z-index: 1; }
+        
+        button { padding: 12px 30px; background: #03a9f4; color: white; border: none; border-radius: 50px; font-weight: bold; cursor: pointer; margin-top: 15px; box-shadow: 0 5px 15px rgba(3,169,244,0.3); }
+    </style>
+</head>
+<body>
+    <audio id="bgMusic" loop><source src="https://pixabay.com/music/download/111451/" type="audio/mp3"></audio>
+    <audio id="popSound"><source src="https://www.soundjay.com/buttons/sounds/button-37a.mp3" type="audio/mp3"></audio>
+    <audio id="typeSound"><source src="https://www.soundjay.com/communication/sounds/typewriter-key-1.mp3" type="audio/mp3"></audio>
+
+    <div id="step1" class="screen">
+        <h1 style="font-family: 'Caveat'; font-size: 2.8rem; margin:0;">Barakallah fie umriiikk syifaaaaa🥳😘</h1>
+        <p>Pecahkan 10 gelembung rindu untuk lanjut!</p>
+        <div id="bubble-area"></div>
+    </div>
+
+    <div id="step2" class="screen hidden">
+        <h1 style="font-family: 'Caveat'; font-size: 2.5rem; margin:0;">Tangkap 5 Kado Spesial! 🎁</h1>
+        <p>Klik kado yang jatuh untuk memekarkan bunga!</p>
+        <div id="gift-area"></div>
+    </div>
+
+    <div id="step3" class="screen hidden">
+        <div class="card">
+            <h2 style="font-family: 'Caveat'; font-size: 2.2rem; margin: 0 0 10px 0;">Untuk Syifa Ushodry 💙</h2>
+            <div id="puisiContent" class="puisi-box"></div>
+            <button onclick="final()">Peluk Jauh! 🤗</button>
+        </div>
+        <div id="petal-container"></div>
+    </div>
+
+    <script>
+        const music = document.getElementById('bgMusic');
+        const pop = document.getElementById('popSound');
+        const typeSound = document.getElementById('typeSound');
+        
+        let popped = 0;
+        let gifts = 0;
+
+        function initBubbles() {
+            for(let i=0; i<10; i++) {
+                const b = document.createElement('div');
+                b.className = 'item bubble';
+                let size = 60;
+                b.style.width = b.style.height = size + 'px';
+                let posX = Math.random() * (window.innerWidth - size);
+                let posY = Math.random() * (window.innerHeight - size);
+                let vx = (Math.random() - 0.5) * 6;
+                let vy = (Math.random() - 0.5) * 6;
+
+                function move() {
+                    posX += vx; posY += vy;
+                    if(posX <= 0 || posX >= window.innerWidth - size) vx *= -1;
+                    if(posY <= 0 || posY >= window.innerHeight - size) vy *= -1;
+                    b.style.left = posX + 'px'; b.style.top = posY + 'px';
+                    if(b.parentNode) requestAnimationFrame(move);
+                }
+                b.onclick = () => {
+                    music.play(); pop.currentTime=0; pop.play();
+                    b.remove(); popped++;
+                    if(popped === 10) changeStep(2);
+                };
+                document.getElementById('bubble-area').appendChild(b);
+                move();
+            }
+        }
+
+        function initGifts() {
+            const interval = setInterval(() => {
+                if(gifts >= 5) { clearInterval(interval); return; }
+                const g = document.createElement('div');
+                g.className = 'item gift';
+                g.innerHTML = '🎁';
+                g.style.left = Math.random() * 80 + 10 + 'vw';
+                g.style.top = '-60px';
+                document.getElementById('gift-area').appendChild(g);
+
+                let pos = -60;
+                function fall() {
+                    pos += 4;
+                    g.style.top = pos + 'px';
+                    if(pos < window.innerHeight && g.parentNode) requestAnimationFrame(fall);
+                    else g.remove();
+                }
+                g.onclick = () => {
+                    pop.currentTime=0; pop.play();
+                    g.innerHTML = '🌸';
+                    g.style.pointerEvents = 'none';
+                    gifts++;
+                    if(gifts === 5) setTimeout(() => changeStep(3), 1000);
+                };
+                fall();
+            }, 1200);
+        }
+
+        function changeStep(s) {
+            document.querySelectorAll('.screen').forEach(sec => sec.classList.add('hidden'));
+            document.getElementById('step' + s).classList.remove('hidden');
+            if(s === 2) initGifts();
+            if(s === 3) { startPetals(); typePoem(); }
+        }
+
+        function typePoem() {
+            const teks = `Barakallah fie umriiikk syifaaaa🥳🥳<br><br>Di usiamu yang kini 23, aku cuma mau bilang makasih banyak. Makasih udah sabar nemenin aku selama 7 tahun ini. Makasih udah mau selalu datang ke rumahku tanpa pernah ngeluh meski aku gak bisa ke mana-mana.<br><br>Maaf ya kalau aku sering menuntut, tapi aku beruntung banget punya kamu. Kamu itu sahabat yang paling pengertian. Tetaplah jadi Syifa yang tangguh ya!<br><br>Selamat ulang tahun, Matahariku! Aku bangga banget memilikimu. I Love You More Than Anything! 💙`;
+            let n = 0; const target = document.getElementById("puisiContent");
+            function typing() {
+                if (n < teks.length) {
+                    if (teks.slice(n, n + 4) === "<br>") { target.innerHTML += "<br>"; n += 4; }
+                    else { 
+                        target.innerHTML += teks.charAt(n); 
+                        n++; 
+                        if(teks.charAt(n) !== " ") { typeSound.currentTime=0; typeSound.play(); }
+                    }
+                    setTimeout(typing, 50);
+                    target.scrollTop = target.scrollHeight;
+                }
+            }
+            typing();
+        }
+
+        function startPetals() {
+            setInterval(() => {
+                const p = document.createElement('div');
+                p.className = 'petal';
+                const size = Math.random() * 10 + 10 + 'px';
+                p.style.width = p.style.height = size;
+                p.style.left = Math.random() * 100 + 'vw';
+                p.style.top = '-20px';
+                document.body.appendChild(p);
+                let pos = -20; let rot = 0;
+                function fall() {
+                    pos += 2; rot += 2;
+                    p.style.top = pos + 'px';
+                    p.style.transform = `rotate(${rot}deg)`;
+                    if(pos < window.innerHeight) requestAnimationFrame(fall);
+                    else p.remove();
+                }
+                fall();
+            }, 300);
+        }
+
+        function final() {
+            confetti({ particleCount: 200, spread: 80, origin: { y: 0.6 } });
+            alert("Happy Birthday Syifa Ushodry! 💙🎂");
+        }
+
+        window.onload = initBubbles;
+    </script>
+</body>
+</html>
